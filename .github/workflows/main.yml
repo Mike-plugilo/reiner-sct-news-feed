@@ -31,10 +31,3 @@ jobs:
         mkdir -p docs
         cp rss.xml docs/rss.xml
 
-    - name: Commit docs/rss.xml
-      run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git add docs/rss.xml
-        git commit -m "Add rss.xml to docs folder" || echo "No changes"
-        git push
