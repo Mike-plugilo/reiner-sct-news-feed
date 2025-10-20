@@ -19,3 +19,7 @@ jobs:
           pip install beautifulsoup4 feedgen requests
       - name: Run scraper
         run: python scrape_feed.py
+      - name: Move RSS file to docs folder
+        run: |
+         mkdir -p docs
+         cp rss.xml docs/rss.xml
