@@ -1,9 +1,9 @@
 name: Update REINER SCT RSS Feed
 
 on:
-  workflow_dispatch:       # manuell starten
-  schedule:                # automatisch alle 4 Stunden
-    - cron: '0 */4 * * *'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */4 * * *' # alle 4 Stunden
 
 jobs:
   build:
@@ -30,4 +30,3 @@ jobs:
       run: |
         mkdir -p docs
         cp rss.xml docs/rss.xml
-
