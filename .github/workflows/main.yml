@@ -1,25 +1,40 @@
 name: Update REINER SCT RSS Feed
 
 on:
-  schedule:
-    - cron: '0 */4 * * *'  # alle 4 Stunden
-  workflow_dispatch:
+  workflow_dispatch:       # manuell starten
+  schedule:                # automatisch alle 4 Stunden
+    - cron: '0 */4 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
-      - name: Install dependencies
-        run: |
-          pip install beautifulsoup4 feedgen requests
-      - name: Run scraper
-        run: python scrape_feed.py
-      - name: Move RSS file to docs folder
-        run: |
-         mkdir -p docs
-         cp rss.xml docs/rss.xml
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 feedgen
+
+    - name: Run scraper
+      run: python scrape_feed.py
+
+    - name: Move RSS file to docs folder
+      run: |
+        mkdir -p docs
+        cp rss.xml docs/rss.xml
+
+    - name: Commit docs/rss.xml
+      run: |
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git add docs/rss.xml
+        git commit -m "Add rss.xml to docs folder" || echo "No changes"
+        git push
