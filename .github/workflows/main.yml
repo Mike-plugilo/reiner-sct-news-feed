@@ -31,12 +31,16 @@ jobs:
         mkdir -p docs
         cp rss.xml docs/rss.xml
 
+    - name: Create .nojekyll
+      run: |
+        touch docs/.nojekyll
+
     - name: Commit and push RSS
       env:
         TOKEN: ${{ secrets.TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add docs/rss.xml
+        git add docs/rss.xml docs/.nojekyll
         git commit -m "Update feed" || echo "No changes to commit"
         git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main
